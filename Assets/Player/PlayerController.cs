@@ -2,7 +2,7 @@
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
-    public float angle = 25;
+    public float Angle = 25;
 	public Direction Direction = Direction.RIGHT;
 	public float Force;
 
@@ -35,13 +35,13 @@ public class PlayerController : MonoBehaviour {
             if (!_lastClickPoint.HasValue)
             {
                 _lastClickPoint = GetClickPoint();
-
-                _trajectory.SetPosition(0, transform.position);
-                _trajectory.SetPosition(1, _lastClickPoint.Value);
             }
 
             _forceMultiplier += Time.deltaTime * 2;
             _forceMultiplier = _forceMultiplier >= 1.2f ? 1.2f : _forceMultiplier;
+            
+            var jumpForce = JumpForce(_lastClickPoint.Value, Angle);
+            UpdateTrajectory(transform.position, jumpForce * _forceMultiplier / _rigidBody.mass, Physics.gravity);
         }
 
         if (Input.GetMouseButtonUp(0))
@@ -54,7 +54,7 @@ public class PlayerController : MonoBehaviour {
 
             if(_lastClickPoint.HasValue && _canJump)
             {
-                var jumpForce = JumpForce(_lastClickPoint.Value, angle);
+                var jumpForce = JumpForce(_lastClickPoint.Value, Angle);
                 _rigidBody.AddForce(jumpForce * _forceMultiplier, ForceMode2D.Impulse);
     
                 _lastClickPoint = null;
@@ -73,6 +73,34 @@ public class PlayerController : MonoBehaviour {
 			MoveLeft();
 		}
 	}
+    
+    void UpdateTrajectory(Vector3 initialPosition, Vector3 initialVelocity, Vector3 gravity)
+    {
+        var trajectoryPoints = new List<Vector3>();
+        var maxSteps = 100;
+        var timeDelta = 1.0f / initialVelocity.magnitude;
+    
+        var position = initialPosition;
+        var velocity = initialVelocity;
+        var i = 0;
+        
+        while(i < maxSteps && position.y >= initialPosition.y)
+        {
+            position += velocity * timeDelta * _rigidBody.drag + 0.5f * gravity * timeDelta * timeDelta / _rigidBody.mass;
+            velocity += gravity * timeDelta / _rigidBody.drag / _rigidBody.mass;
+
+            trajectoryPoints.Add(position);
+        }
+
+        _trajectory.SetVertexCount(trajectoryPoints.Count);
+        i = 0;
+        
+        foreach(var point in trajectoryPoints)
+        {
+            _trajectory.SetPosition(i, point);
+            i++;
+        }
+    }
     
     void OnCollisionEnter2D(Collision2D hit)
     {

@@ -9,7 +9,8 @@ public class PlayerController : MonoBehaviour {
     private Rigidbody2D _rigidBody;
     private Vector3? _lastClickPoint;
     private float _forceMultiplier = 0.0f;
-    public bool _canJump = true;
+    private bool _canJump = true;
+    private bool _clingsToWall = false;
 
     public Material TrajectoryMaterial;
     private LineRenderer _trajectory;
@@ -29,7 +30,6 @@ public class PlayerController : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        
         if (Input.GetMouseButton(0) && _canJump)
         {
             if (!_lastClickPoint.HasValue)
@@ -49,6 +49,7 @@ public class PlayerController : MonoBehaviour {
             if(_rigidBody.gravityScale == 0.0f)
             {
                 _rigidBody.gravityScale = _initialGravityScale;
+                _clingsToWall = false;
             }
 
             if(_lastClickPoint.HasValue && _canJump)
@@ -83,14 +84,18 @@ public class PlayerController : MonoBehaviour {
         {
             _rigidBody.gravityScale = 0.0f;
             _rigidBody.velocity = new Vector2(0.0f, 0.0f);
+
+            _clingsToWall = true;
         }
     }
 	
 	public void MoveRight()
 	{
-        if(_canJump)
+        if(!_clingsToWall)
         {
-            _rigidBody.AddForce (new Vector2 (Force, 0));
+            var force = _canJump ? Force : 0.25f * Force;
+            
+            _rigidBody.AddForce (new Vector2 (force, 0));
             this.Direction = Direction.RIGHT;
         }
 	}
@@ -98,12 +103,14 @@ public class PlayerController : MonoBehaviour {
 	
 	public void MoveLeft()
 	{
-        if(_canJump)
+        if (!_clingsToWall)
         {
-            _rigidBody.AddForce (new Vector2 (-Force, 0));
+            var force = _canJump ? -Force : -0.25f * Force;
+
+            _rigidBody.AddForce(new Vector2(force, 0));
             this.Direction = Direction.LEFT;
         }
-	}
+    }
     
     Vector3 GetClickPoint()
     {

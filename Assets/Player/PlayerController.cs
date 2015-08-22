@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour {
             }
 
             _forceMultiplier += Time.deltaTime * 2;
+            _forceMultiplier = _forceMultiplier >= 1.2f ? 1.2f : _forceMultiplier;
             Debug.Log("_forceMultiplier: " + _forceMultiplier);
         }
 

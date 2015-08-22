@@ -4,10 +4,14 @@ using System.Collections;
 public class WalkingStrategy : MonoBehaviour, EnemyStrategy
 {
     private MonoBehaviour _what;
+    private float _WalkTimer;
+    private bool _direction;
 
     public WalkingStrategy ( MonoBehaviour what)
     {
         _what = what;
+        _WalkTimer = 2;
+
     }
 
 	// Use this for initialization
@@ -17,7 +21,14 @@ public class WalkingStrategy : MonoBehaviour, EnemyStrategy
 	
 	// Update is called once per frame
 	void Update () {
-        _what.GetComponent<Rigidbody2D>().AddForce(new Vector2(80, 0));
+        _WalkTimer -= Time.deltaTime;
+        if (_WalkTimer <= 0)
+        {
+            _WalkTimer = 2;
+            _direction = !_direction;
+        }
+        float force = (_direction ? 1 : -1) * 80;
+        _what.GetComponent<Rigidbody2D>().AddForce(new Vector2(force, 0));
 	}
 
     public void Perform()

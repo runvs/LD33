@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour {
     private float _forceMultiplier = 0.0f;
     private bool _canJump = true;
     private bool _clingsToWall = false;
+    private bool _canWalk = true;
 
     public Material TrajectoryMaterial;
     private LineRenderer _trajectory;
@@ -23,7 +24,6 @@ public class PlayerController : MonoBehaviour {
 
         _trajectory = this.gameObject.AddComponent<LineRenderer>();
         _trajectory.SetWidth(0.06f, 0.0f);
-        _trajectory.SetVertexCount(5);
         _trajectory.material = TrajectoryMaterial; 
     }
 
@@ -44,6 +44,7 @@ public class PlayerController : MonoBehaviour {
             UpdateTrajectory(transform.position, jumpForce * _forceMultiplier / _rigidBody.mass, Physics.gravity);
 
             TrajectoryMaterial.SetColor("_TintColor", Color.red);
+            _canWalk = false;
         }
         else
         {
@@ -51,6 +52,7 @@ public class PlayerController : MonoBehaviour {
             color.a = color.a * 0.8f;
 
             TrajectoryMaterial.SetColor("_TintColor", color);
+            _canWalk = true;
         }
 
         if (Input.GetMouseButtonUp(0))
@@ -75,13 +77,13 @@ public class PlayerController : MonoBehaviour {
 
         var animator = this.GetComponent<Animator>();
         
-        if (Input.GetAxis ("Horizontal") > 0)
+        if (Input.GetAxis ("Horizontal") > 0 && _canWalk)
 		{
 			MoveRight ();
             animator.SetBool("walking", true);
 
         }
-		else if (Input.GetAxis ("Horizontal") < 0)
+		else if (Input.GetAxis ("Horizontal") < 0 && _canWalk)
 		{
 			MoveLeft();
             animator.SetBool("walking", true);

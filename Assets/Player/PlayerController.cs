@@ -64,14 +64,33 @@ public class PlayerController : MonoBehaviour {
             }
         }
 
-		if (Input.GetAxis ("Horizontal") > 0)
+        var animator = this.GetComponent<Animator>();
+        
+        if (Input.GetAxis ("Horizontal") > 0)
 		{
 			MoveRight ();
-		}
+            animator.SetBool("walking", true);
+
+        }
 		else if (Input.GetAxis ("Horizontal") < 0)
 		{
 			MoveLeft();
-		}
+            animator.SetBool("walking", true);
+        }
+        else
+        {
+            animator.SetBool("walking", false);
+        }
+
+
+        if (_rigidBody.velocity.x != 0)
+        {
+            this.transform.localScale = new Vector3((_rigidBody.velocity.x > 0 ? 1 : -1), 1, 1);
+        }
+
+
+        animator.SetFloat("speed", Mathf.Abs(( 0.25f + _rigidBody.velocity.x ) / 2.0f));
+
 	}
     
     void OnCollisionEnter2D(Collision2D hit)

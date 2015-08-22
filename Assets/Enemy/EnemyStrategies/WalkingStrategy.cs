@@ -10,7 +10,7 @@ public class WalkingStrategy : MonoBehaviour, EnemyStrategy
     public WalkingStrategy ( MonoBehaviour what)
     {
         _what = what;
-        _WalkTimer = 2;
+        _WalkTimer = GameProperties.Enemy_WalkTimer;
 
     }
 
@@ -24,10 +24,10 @@ public class WalkingStrategy : MonoBehaviour, EnemyStrategy
         _WalkTimer -= Time.deltaTime;
         if (_WalkTimer <= 0)
         {
-            _WalkTimer = 2;
+            _WalkTimer = GameProperties.Enemy_WalkTimer;
             _direction = !_direction;
         }
-        float force = (_direction ? 1 : -1) * 80;
+        float force = (_direction ? 1 : -1) * GameProperties.Enemy_AccelerationForce;
         _what.GetComponent<Rigidbody2D>().AddForce(new Vector2(force, 0));
 	}
 

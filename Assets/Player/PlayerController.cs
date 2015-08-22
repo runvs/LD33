@@ -7,6 +7,8 @@ public class PlayerController : MonoBehaviour {
 	public float Force = 0.05f;
 
     private Rigidbody2D _rigidBody;
+    private Vector3? _lastClickPoint;
+    private float _forceMultiplier = 0.0f;
 
     // Use this for initialization
     void Start ()
@@ -17,10 +19,27 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
-		if(Input.GetMouseButtonUp(0))
+		if (Input.GetMouseButton (0))
+        {
+            Debug.Log("Mouse button down");
+            if(!_lastClickPoint.HasValue)
+            {
+                _lastClickPoint = GetClickPoint();
+
+                Debug.Log("Setting value for _lastClickPoint");
+            }
+
+            _forceMultiplier += Time.deltaTime * 2;
+            Debug.Log("_forceMultiplier: " + _forceMultiplier);
+        }
+
+		if(Input.GetMouseButtonUp(0) && _lastClickPoint.HasValue)
 		{
-            var jumpForce = JumpForce(GetClickPoint(), angle);
-            _rigidBody.AddForce (jumpForce, ForceMode2D.Impulse);
+            var jumpForce = JumpForce(_lastClickPoint.Value, angle);
+            _rigidBody.AddForce (jumpForce * _forceMultiplier, ForceMode2D.Impulse);
+            
+            _lastClickPoint = null;
+            _forceMultiplier = 0.0f;
         }
 
 		if (Input.GetAxis ("Horizontal") > 0)

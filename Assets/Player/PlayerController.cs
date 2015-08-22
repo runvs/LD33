@@ -13,23 +13,25 @@ public class PlayerController : MonoBehaviour {
 
     public Material TrajectoryMaterial;
     private LineRenderer _trajectory;
+    private float _initialGravityScale;
 
     void Start ()
 	{
         _rigidBody = GetComponent<Rigidbody2D>();
+        _initialGravityScale = _rigidBody.gravityScale;
 
         _trajectory = this.gameObject.AddComponent<LineRenderer>();
         _trajectory.SetWidth(0.01f, 0.01f);
         _trajectory.SetVertexCount(5);
         _trajectory.material = TrajectoryMaterial; 
     }
-	
-	// Update is called once per frame
-	void Update()
-	{
-		if (Input.GetMouseButton (0) && _canJump)
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetMouseButton(0) && _canJump)
         {
-            if(!_lastClickPoint.HasValue)
+            if (!_lastClickPoint.HasValue)
             {
                 _lastClickPoint = GetClickPoint();
 
@@ -41,15 +43,23 @@ public class PlayerController : MonoBehaviour {
             _forceMultiplier = _forceMultiplier >= 1.2f ? 1.2f : _forceMultiplier;
         }
 
-		if(Input.GetMouseButtonUp(0) && _lastClickPoint.HasValue && _canJump)
-		{
-            var jumpForce = JumpForce(_lastClickPoint.Value, angle);
-            _rigidBody.AddForce (jumpForce * _forceMultiplier, ForceMode2D.Impulse);
-            
-            _lastClickPoint = null;
-            _forceMultiplier = 0.0f;
+        if (Input.GetMouseButtonUp(0))
+        {
+            if(_rigidBody.gravityScale == 0.0f)
+            {
+                _rigidBody.gravityScale = _initialGravityScale;
+            }
 
-            _canJump = false;
+            if(_lastClickPoint.HasValue && _canJump)
+            {
+                var jumpForce = JumpForce(_lastClickPoint.Value, angle);
+                _rigidBody.AddForce(jumpForce * _forceMultiplier, ForceMode2D.Impulse);
+    
+                _lastClickPoint = null;
+                _forceMultiplier = 0.0f;
+    
+                _canJump = false;
+            }
         }
 
 		if (Input.GetAxis ("Horizontal") > 0)
@@ -68,19 +78,30 @@ public class PlayerController : MonoBehaviour {
         {
             _canJump = true;
         }
+        else if(hit.gameObject.tag == "Wall" && Input.GetMouseButton(0))
+        {
+            _rigidBody.gravityScale = 0.0f;
+            _rigidBody.velocity = new Vector2(0.0f, 0.0f);
+        }
     }
 	
 	public void MoveRight()
 	{
-		_rigidBody.AddForce (new Vector2 (Force, 0));
-		this.Direction = Direction.RIGHT;
+        if(_canJump)
+        {
+            _rigidBody.AddForce (new Vector2 (Force, 0));
+            this.Direction = Direction.RIGHT;
+        }
 	}
 	
 	
 	public void MoveLeft()
 	{
-		_rigidBody.AddForce (new Vector2 (-Force, 0));
-		this.Direction = Direction.LEFT;
+        if(_canJump)
+        {
+            _rigidBody.AddForce (new Vector2 (-Force, 0));
+            this.Direction = Direction.LEFT;
+        }
 	}
     
     Vector3 GetClickPoint()

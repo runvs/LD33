@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour {
     private Rigidbody2D _rigidBody;
     private Vector3? _lastClickPoint;
     private float _forceMultiplier = 0.0f;
-    private bool _canJump = true;
+    public bool _canJump = true;
 
     public Material TrajectoryMaterial;
     private LineRenderer _trajectory;
@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        
         if (Input.GetMouseButton(0) && _canJump)
         {
             if (!_lastClickPoint.HasValue)

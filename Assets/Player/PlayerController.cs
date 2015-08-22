@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour {
     private Rigidbody2D _rigidBody;
     private Vector3? _lastClickPoint;
     private float _forceMultiplier = 0.0f;
+    private bool _canJump = true;
 
     public Material TrajectoryMaterial;
     private LineRenderer _trajectory;
@@ -24,9 +25,9 @@ public class PlayerController : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update ()
+	void Update()
 	{
-		if (Input.GetMouseButton (0))
+		if (Input.GetMouseButton (0) && _canJump)
         {
             if(!_lastClickPoint.HasValue)
             {
@@ -40,13 +41,15 @@ public class PlayerController : MonoBehaviour {
             _forceMultiplier = _forceMultiplier >= 1.2f ? 1.2f : _forceMultiplier;
         }
 
-		if(Input.GetMouseButtonUp(0) && _lastClickPoint.HasValue)
+		if(Input.GetMouseButtonUp(0) && _lastClickPoint.HasValue && _canJump)
 		{
             var jumpForce = JumpForce(_lastClickPoint.Value, angle);
             _rigidBody.AddForce (jumpForce * _forceMultiplier, ForceMode2D.Impulse);
             
             _lastClickPoint = null;
             _forceMultiplier = 0.0f;
+
+            _canJump = false;
         }
 
 		if (Input.GetAxis ("Horizontal") > 0)
@@ -58,6 +61,14 @@ public class PlayerController : MonoBehaviour {
 			MoveLeft();
 		}
 	}
+    
+    void OnCollisionEnter2D(Collision2D hit)
+    {
+        if(hit.gameObject.tag == "Floor")
+        {
+            _canJump = true;
+        }
+    }
 	
 	public void MoveRight()
 	{

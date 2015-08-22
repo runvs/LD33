@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour {
 
     public Material TrajectoryMaterial;
     private LineRenderer _trajectory;
-    private List<Vector3> _trajectoryPoints = new List<Vector3>();
 
     void Start ()
 	{
@@ -33,12 +32,8 @@ public class PlayerController : MonoBehaviour {
             {
                 _lastClickPoint = GetClickPoint();
 
-                var mass = GetComponent<Rigidbody2D>().mass;
-
                 _trajectory.SetPosition(0, transform.position);
                 _trajectory.SetPosition(1, _lastClickPoint.Value);
-                _trajectory.SetPosition(2, _lastClickPoint.Value * mass);
-                _trajectory.SetPosition(3, _lastClickPoint.Value * mass * mass);
             }
 
             _forceMultiplier += Time.deltaTime * 2;

@@ -2,22 +2,48 @@
 
 public class PlayerController : MonoBehaviour {
     public float angle = 25;
+	public Direction Direction = Direction.RIGHT;
+	public float MaxVelocity = .05f;
+	public float Force = 0.05f;
+
     private Rigidbody2D _rigidBody;
 
     // Use this for initialization
-    void Start () {
+    void Start ()
+	{
         _rigidBody = GetComponent<Rigidbody2D>();
     }
 	
 	// Update is called once per frame
-	void Update () {
-	   if(Input.GetMouseButtonUp(0))
-       {
-            var force = JumpForce(GetClickPoint(), angle);
-            
-            _rigidBody.AddForce (force, ForceMode2D.Impulse);
-            Debug.Log("Force " + force);
+	void Update ()
+	{
+		if(Input.GetMouseButtonUp(0))
+		{
+            var jumpForce = JumpForce(GetClickPoint(), angle);
+            _rigidBody.AddForce (jumpForce, ForceMode2D.Impulse);
         }
+
+		if (Input.GetAxis ("Horizontal") > 0)
+		{
+			MoveRight ();
+		}
+		else if (Input.GetAxis ("Horizontal") < 0)
+		{
+			MoveLeft();
+		}
+	}
+	
+	public void MoveRight()
+	{
+		_rigidBody.AddForce (new Vector2 (Force, 0));
+		this.Direction = Direction.RIGHT;
+	}
+	
+	
+	public void MoveLeft()
+	{
+		_rigidBody.AddForce (new Vector2 (-Force, 0));
+		this.Direction = Direction.LEFT;
 	}
     
     Vector3 GetClickPoint()
@@ -57,4 +83,9 @@ public class PlayerController : MonoBehaviour {
         var mass = _rigidBody.mass;
         return vel * dir.normalized * mass;
     }
+}
+
+public enum Direction
+{
+	LEFT, RIGHT
 }

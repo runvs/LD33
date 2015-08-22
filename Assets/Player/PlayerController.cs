@@ -21,17 +21,13 @@ public class PlayerController : MonoBehaviour {
 	{
 		if (Input.GetMouseButton (0))
         {
-            Debug.Log("Mouse button down");
             if(!_lastClickPoint.HasValue)
             {
                 _lastClickPoint = GetClickPoint();
-
-                Debug.Log("Setting value for _lastClickPoint");
             }
 
             _forceMultiplier += Time.deltaTime * 2;
             _forceMultiplier = _forceMultiplier >= 1.2f ? 1.2f : _forceMultiplier;
-            Debug.Log("_forceMultiplier: " + _forceMultiplier);
         }
 
 		if(Input.GetMouseButtonUp(0) && _lastClickPoint.HasValue)

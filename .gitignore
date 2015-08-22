@@ -316,3 +316,5 @@ _Pvt_Extensions
 *.pidb
 *.resources
 test-results/
+Assets/Standard Assets/Effects/GlassRefraction/Materials/GlassRefractive.mat
+Assets/Standard Assets/

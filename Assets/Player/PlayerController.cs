@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour {
         _initialGravityScale = _rigidBody.gravityScale;
 
         _trajectory = this.gameObject.AddComponent<LineRenderer>();
-        _trajectory.SetWidth(0.04f, 0.0f);
+        _trajectory.SetWidth(0.06f, 0.0f);
         _trajectory.SetVertexCount(5);
         _trajectory.material = TrajectoryMaterial; 
     }

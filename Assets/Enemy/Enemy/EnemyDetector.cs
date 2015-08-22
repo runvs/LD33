@@ -2,15 +2,20 @@
 using System.Collections;
 
 public class EnemyDetector : MonoBehaviour {
-    
+
+
+    public EnemyStrategy _strategy;
 
     // Use this for initialization
-    void Start () {
+    void Start ()
+    {
         
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
+      
     }
 
     void OnTriggerEnter2D(Collider2D coll)

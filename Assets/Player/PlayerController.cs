@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
     public float angle = 25;
@@ -9,10 +10,18 @@ public class PlayerController : MonoBehaviour {
     private Vector3? _lastClickPoint;
     private float _forceMultiplier = 0.0f;
 
-    // Use this for initialization
+    public Material TrajectoryMaterial;
+    private LineRenderer _trajectory;
+    private List<Vector3> _trajectoryPoints = new List<Vector3>();
+
     void Start ()
 	{
         _rigidBody = GetComponent<Rigidbody2D>();
+
+        _trajectory = this.gameObject.AddComponent<LineRenderer>();
+        _trajectory.SetWidth(0.01f, 0.01f);
+        _trajectory.SetVertexCount(5);
+        _trajectory.material = TrajectoryMaterial; 
     }
 	
 	// Update is called once per frame
@@ -23,6 +32,13 @@ public class PlayerController : MonoBehaviour {
             if(!_lastClickPoint.HasValue)
             {
                 _lastClickPoint = GetClickPoint();
+
+                var mass = GetComponent<Rigidbody2D>().mass;
+
+                _trajectory.SetPosition(0, transform.position);
+                _trajectory.SetPosition(1, _lastClickPoint.Value);
+                _trajectory.SetPosition(2, _lastClickPoint.Value * mass);
+                _trajectory.SetPosition(3, _lastClickPoint.Value * mass * mass);
             }
 
             _forceMultiplier += Time.deltaTime * 2;

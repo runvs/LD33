@@ -3,8 +3,7 @@
 public class PlayerController : MonoBehaviour {
     public float angle = 25;
 	public Direction Direction = Direction.RIGHT;
-	public float MaxVelocity = .05f;
-	public float Force = 0.05f;
+	public float Force;
 
     private Rigidbody2D _rigidBody;
     private Vector3? _lastClickPoint;

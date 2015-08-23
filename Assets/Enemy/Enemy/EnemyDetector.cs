@@ -14,11 +14,13 @@ public class EnemyDetector : MonoBehaviour {
     public Sprite markYellow;
 
     private SpriteRenderer sprr;
+    private Light markLight;
 
     // Use this for initialization
     void Start ()
     {
         sprr = this.transform.FindChild("Mark").GetComponent<SpriteRenderer>();
+        markLight = this.transform.FindChild("MarkLight").GetComponent<Light>();
     }
 	
 	// Update is called once per frame
@@ -44,14 +46,17 @@ public class EnemyDetector : MonoBehaviour {
         if (_detectionTimer < GameProperties.Enemy_DetectionTimeMax/2.0f)
         {
             sprr.sprite = markRed;
+            markLight.enabled = true;
         }
         else if (_detectionTimer < GameProperties.Enemy_DetectionTimeMax)
         {
             sprr.sprite = markYellow;
+            markLight.enabled = true;
         }
         else
         {
             sprr.sprite = null;
+            markLight.enabled = false;
         }
 
     }

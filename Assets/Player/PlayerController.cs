@@ -122,6 +122,8 @@ public class PlayerController : MonoBehaviour {
             position += velocity * timeDelta * _rigidBody.drag + 0.5f * gravity * timeDelta * timeDelta / _rigidBody.mass;
             velocity += gravity * timeDelta / _rigidBody.drag / _rigidBody.mass;
 
+            position.z = transform.position.z;
+
             trajectoryPoints.Add(position);
         }
 

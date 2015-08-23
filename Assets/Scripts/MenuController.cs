@@ -15,6 +15,6 @@ public class MenuController : MonoBehaviour {
 
     public void StartGame()
     {
-        Application.LoadLevel("scene1");
+        Application.LoadLevel("enemytester");
     }
 }

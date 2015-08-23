@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour {
     public Material TrajectoryMaterial;
     private LineRenderer _trajectory;
     private float _initialGravityScale;
+    private Animator _animator;
 
     void Start ()
 	{
@@ -24,7 +25,9 @@ public class PlayerController : MonoBehaviour {
 
         _trajectory = this.gameObject.AddComponent<LineRenderer>();
         _trajectory.SetWidth(0.06f, 0.0f);
-        _trajectory.material = TrajectoryMaterial; 
+        _trajectory.material = TrajectoryMaterial;
+        
+        _animator = GetComponent<Animator>(); 
     }
 
     // Update is called once per frame
@@ -45,6 +48,8 @@ public class PlayerController : MonoBehaviour {
 
             TrajectoryMaterial.SetColor("_TintColor", Color.red);
             _canWalk = false;
+            
+            _animator.SetBool("ducking", true);
         }
         else
         {
@@ -53,6 +58,8 @@ public class PlayerController : MonoBehaviour {
 
             TrajectoryMaterial.SetColor("_TintColor", color);
             _canWalk = true;
+            
+            _animator.SetBool("ducking", false);
         }
 
         if (Input.GetMouseButtonUp(0))
@@ -74,34 +81,30 @@ public class PlayerController : MonoBehaviour {
                 _canJump = false;
             }
         }
-
-        var animator = this.GetComponent<Animator>();
         
         if (Input.GetAxis ("Horizontal") > 0 && _canWalk)
 		{
 			MoveRight ();
-            animator.SetBool("walking", true);
-
+            _animator.SetBool("walking", true);
         }
 		else if (Input.GetAxis ("Horizontal") < 0 && _canWalk)
 		{
 			MoveLeft();
-            animator.SetBool("walking", true);
+            _animator.SetBool("walking", true);
         }
         else
         {
-            animator.SetBool("walking", false);
+            _animator.SetBool("walking", false);
         }
-
 
         if (_rigidBody.velocity.x != 0)
         {
             this.transform.localScale = new Vector3((_rigidBody.velocity.x > 0 ? 1 : -1), 1, 1);
         }
 
-
-        animator.SetFloat("speed", Mathf.Abs(( 0.25f + _rigidBody.velocity.x ) / 2.0f));
-
+        _animator.SetBool("clingsToWall", _clingsToWall);
+        _animator.SetBool("falling", !(_canWalk && _canJump));
+        _animator.SetFloat("speed", Mathf.Abs(( 0.25f + _rigidBody.velocity.x ) / 2.0f));
 	}
     
     void UpdateTrajectory(Vector3 initialPosition, Vector3 initialVelocity, Vector3 gravity)

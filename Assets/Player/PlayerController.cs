@@ -35,10 +35,7 @@ public class PlayerController : MonoBehaviour {
     {
         if (Input.GetMouseButton(0) && _canJump)
         {
-            if (!_lastClickPoint.HasValue)
-            {
-                _lastClickPoint = GetClickPoint();
-            }
+            _lastClickPoint = GetClickPoint();
 
             _forceMultiplier += Time.deltaTime * 2;
             _forceMultiplier = _forceMultiplier >= 1.2f ? 1.2f : _forceMultiplier;

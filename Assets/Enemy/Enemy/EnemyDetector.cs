@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class EnemyDetector : MonoBehaviour {
 
 
     public EnemyStrategy _strategy;
 
-    public static float _detectionTimer = 1;
-    private static bool _playerInDetection = false;
+    public float _detectionTimer = GameProperties.Enemy_DetectionTimeMax;
+    private bool _playerInDetection = false;
 
     // Use this for initialization
     void Start ()
@@ -18,7 +19,28 @@ public class EnemyDetector : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-      
+        if (_playerInDetection)
+        {
+            _detectionTimer -= Time.deltaTime;
+            if (_detectionTimer <= 0)
+            {
+                EndGame();
+            }
+        }
+        else
+        {
+            _detectionTimer += Time.deltaTime * 0.125f;
+            if (_detectionTimer >= GameProperties.Enemy_DetectionTimeMax)
+            {
+                _detectionTimer = GameProperties.Enemy_DetectionTimeMax;
+            }
+        }
+    }
+
+    private void EndGame()
+    {
+        // TODO Fade
+        Application.LoadLevel("Menu");
     }
 
     void OnTriggerEnter2D(Collider2D coll)

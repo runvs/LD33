@@ -37,8 +37,8 @@ public class PlayerController : MonoBehaviour {
         {
             _lastClickPoint = GetClickPoint();
 
-            _forceMultiplier += Time.deltaTime * 2;
-            _forceMultiplier = _forceMultiplier >= 1.2f ? 1.2f : _forceMultiplier;
+            _forceMultiplier += Time.deltaTime * 3;
+            _forceMultiplier = _forceMultiplier >= GameProperties.Player_MaxJumpForce ? GameProperties.Player_MaxJumpForce : _forceMultiplier;
             
             var jumpForce = JumpForce(_lastClickPoint.Value, Angle);
             UpdateTrajectory(transform.position, jumpForce * _forceMultiplier / _rigidBody.mass, Physics.gravity);

@@ -4,7 +4,7 @@ public class CameraMovement : MonoBehaviour
 {
     private Transform Player = null;
     private float _deadZone = 0.25f;
-    private float _speed = 1.5f;
+    public float _speed = 1.5f;
 
     void Start()
     {

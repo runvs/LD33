@@ -69,22 +69,23 @@ public class PlayerController : MonoBehaviour {
 
             if(_lastClickPoint.HasValue && _canJump)
             {
-                if(_forceMultiplier > 0.2f)
+                if(_forceMultiplier > 0.35f)
                 {
+                    Debug.Log(_forceMultiplier);
                     var jumpForce = JumpForce(_lastClickPoint.Value, Angle);
                     _rigidBody.AddForce(jumpForce * _forceMultiplier, ForceMode2D.Impulse);
+    
+                    _canJump = false;
                 }
     
                 _lastClickPoint = null;
                 _forceMultiplier = 0.0f;
-    
-                _canJump = false;
             }
         }
         
         if (Input.GetAxis ("Horizontal") > 0 && _canWalk)
 		{
-			MoveRight ();
+			MoveRight();
             _animator.SetBool("walking", true);
         }
 		else if (Input.GetAxis ("Horizontal") < 0 && _canWalk)
@@ -121,6 +122,9 @@ public class PlayerController : MonoBehaviour {
         {
             position += velocity * timeDelta * _rigidBody.drag + 0.5f * gravity * timeDelta * timeDelta / _rigidBody.mass;
             velocity += gravity * timeDelta / _rigidBody.drag / _rigidBody.mass;
+
+            position.z = transform.position.z;
+            
 
             trajectoryPoints.Add(position);
         }

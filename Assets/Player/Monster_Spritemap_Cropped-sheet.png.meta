@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: bdd1ac3a2ca89f94ba9283b0c066a904
-timeCreated: 1440335877
+timeCreated: 1440357054
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -20,6 +20,9 @@ TextureImporter:
     21300026: Monster_Spritemap_Cropped-sheet_13
     21300028: Monster_Spritemap_Cropped-sheet_14
     21300030: Monster_Spritemap_Cropped-sheet_15
+    21300032: Monster_Spritemap_Cropped-sheet_16
+    21300034: Monster_Spritemap_Cropped-sheet_17
+    21300036: Monster_Spritemap_Cropped-sheet_18
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -219,6 +222,36 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 960
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Monster_Spritemap_Cropped-sheet_16
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Monster_Spritemap_Cropped-sheet_17
+      rect:
+        serializedVersion: 2
+        x: 1088
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Monster_Spritemap_Cropped-sheet_18
+      rect:
+        serializedVersion: 2
+        x: 1152
         y: 0
         width: 64
         height: 64

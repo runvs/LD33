@@ -9,17 +9,25 @@ public class PlayerAttackingScript : MonoBehaviour
     public AudioClip AttackSound;
     public AudioClip HitSound;
 
+    private Animator _animator;
+
     void Start()
     {
         _enemies = new List<GameObject>();
+
+        _animator = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
     }
 
     void Update()
     {
+        _animator.SetBool("attacking", false);
+        
         if (Input.GetMouseButtonDown(1))
         {
             if (_inputTimer <= 0.0f)
             {
+                _animator.SetBool("attacking", true);
+
                 bool hasHit = false;
                 _inputTimer += 0.5f;
                

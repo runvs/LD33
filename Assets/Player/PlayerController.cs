@@ -69,7 +69,7 @@ public class PlayerController : MonoBehaviour {
 
             if(_lastClickPoint.HasValue && _canJump)
             {
-                if(_forceMultiplier > 0.35f)
+                if(_forceMultiplier > GameProperties.Player_MinJumpForce)
                 {
                     Debug.Log(_forceMultiplier);
                     var jumpForce = JumpForce(_lastClickPoint.Value, Angle);

@@ -32,7 +32,6 @@ public class ClearDefaultSceneStuff : MonoBehaviour {
             }
         }
 
-        lgo = GameObject.FindGameObjectsWithTag("MainCamera");
-        Debug.Log(lgo.Length);
+        // check for duplicated Objects takes place in UnitySingleton
     }
 }

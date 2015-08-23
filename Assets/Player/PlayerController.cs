@@ -35,10 +35,7 @@ public class PlayerController : MonoBehaviour {
     {
         if (Input.GetMouseButton(0) && _canJump)
         {
-            if (!_lastClickPoint.HasValue)
-            {
-                _lastClickPoint = GetClickPoint();
-            }
+            _lastClickPoint = GetClickPoint();
 
             _forceMultiplier += Time.deltaTime * 2;
             _forceMultiplier = _forceMultiplier >= 1.2f ? 1.2f : _forceMultiplier;
@@ -72,8 +69,11 @@ public class PlayerController : MonoBehaviour {
 
             if(_lastClickPoint.HasValue && _canJump)
             {
-                var jumpForce = JumpForce(_lastClickPoint.Value, Angle);
-                _rigidBody.AddForce(jumpForce * _forceMultiplier, ForceMode2D.Impulse);
+                if(_forceMultiplier > 0.2f)
+                {
+                    var jumpForce = JumpForce(_lastClickPoint.Value, Angle);
+                    _rigidBody.AddForce(jumpForce * _forceMultiplier, ForceMode2D.Impulse);
+                }
     
                 _lastClickPoint = null;
                 _forceMultiplier = 0.0f;

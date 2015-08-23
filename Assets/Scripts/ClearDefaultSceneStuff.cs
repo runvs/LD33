@@ -4,16 +4,15 @@ using System.Collections;
 public class ClearDefaultSceneStuff : MonoBehaviour {
 
 	// Use this for initialization
-	void Start () {
-
-        if (GameObject.FindGameObjectWithTag("DefaultCamera") != null)
+	void Start ()
+    {
+        GameObject[] lgo = GameObject.FindGameObjectsWithTag("DefaultCamera");
+        foreach (var go in lgo)
         {
-            Destroy(GameObject.FindGameObjectWithTag("MainCamera"));
+            if (go.name != "CameraFromMenu")
+            {
+                Destroy(go);
+            }
         }
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 }

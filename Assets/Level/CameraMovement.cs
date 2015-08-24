@@ -11,13 +11,13 @@ public class CameraMovement : MonoBehaviour
     void Start()
     {
         var player = GameObject.FindGameObjectWithTag("Player");
-        
-        if(player != null)
-        {    
+
+        if (player != null)
+        {
             Player = player.transform;
         }
     }
-	
+
     void Update()
     {
 
@@ -30,10 +30,10 @@ public class CameraMovement : MonoBehaviour
             var playerPosition = Player.position;
             var cameraPosition = transform.position;
             cameraPosition.z = playerPosition.z;
-    
+
             var v3 = playerPosition;
             v3.z = transform.position.z;
-    
+
             if (Vector3.Distance(cameraPosition, playerPosition) > _deadZone)
             {
                 transform.position = Vector3.Lerp(transform.position, v3, _speed * Time.deltaTime);
@@ -42,9 +42,9 @@ public class CameraMovement : MonoBehaviour
         else
         {
             var player = GameObject.FindGameObjectWithTag("Player");
-            
-            if(player != null)
-            {    
+
+            if (player != null)
+            {
                 Player = player.transform;
             }
         }

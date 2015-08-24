@@ -1,16 +1,21 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class EnemyController : MonoBehaviour {
+public class EnemyController : MonoBehaviour
+{
 
     public EnemyStrategy _strategy;
 
     public eEnemyStragegy strategy;
 
+    private Rigidbody2D _rigidBody;
+
 
     // Use this for initialization
-    void Start () {
-        if(strategy == eEnemyStragegy.Sitting)
+    void Start()
+    {
+        _rigidBody = GetComponent<Rigidbody2D>();
+
+        if (strategy == eEnemyStragegy.Sitting)
         {
             _strategy = new SittingStrategy();
         }
@@ -18,14 +23,20 @@ public class EnemyController : MonoBehaviour {
         {
             _strategy = new WalkingStrategy(this);
         }
-        
-	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
         if (_strategy != null)
         {
             _strategy.Perform();
+        }
+
+        if (_rigidBody.velocity.x != 0)
+        {
+            transform.localScale = new Vector3((_rigidBody.velocity.x > 0 ? -1 : 1), 1, 1);
         }
     }
 }

@@ -105,7 +105,7 @@ public class PlayerController : MonoBehaviour {
 
         _animator.SetBool("clingsToWall", _clingsToWall);
         _animator.SetBool("falling", !(_canWalk && _canJump));
-        _animator.SetFloat("speed", Mathf.Abs(( 0.25f + _rigidBody.velocity.x ) / 2.0f));
+        _animator.SetFloat("speed", Mathf.Abs(0.25f+ (_rigidBody.velocity.x ) / 2.0f));
 	}
     
     void UpdateTrajectory(Vector3 initialPosition, Vector3 initialVelocity, Vector3 gravity)

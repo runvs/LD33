@@ -5,50 +5,61 @@ public class Tutorial : MonoBehaviour {
 
     private UnityEngine.UI.Text _text;
 
-    private float _timer = -3;
+
+    public bool fadeIn = false;
+    public bool fadeOut = false;
+    public float _fadeInTimer = 0;
+    public float _fadeOutTimer = 0;
+
+    public float fadeTime;
+    public bool startAutomatic = false;
 
 
     // Use this for initialization
     void Start () {
         _text = gameObject.GetComponent<UnityEngine.UI.Text>();
         _text.color = new Color(0.5f, 0.5f, 0.5f, 0);
+        if (startAutomatic)
+        {
+            fadeIn = true;
+        }
 	}
-	
-	// Update is called once per frame
-	void Update () {
-        float newTimer = _timer + Time.deltaTime;
-        
-        if (_timer> -1 && _timer <= 0)
-        {
-            _text.color = new Color(125, 125, 125, (float)PennerDoubleEquation.GetValue(PennerDoubleEquation.EquationType.Linear, _timer + 1.0f, 0, 1, 1));
-        }
 
-        if(_timer < 3 && newTimer > 3)
+    void OnTriggerEnter2D(Collider2D coll)
+    {
+        if (coll.gameObject.tag == "Player")
         {
-            _text.text = "Hold LMB to jump";
+            _fadeInTimer = 0;
+            fadeIn = true;
+            fadeOut = false;
         }
+    }
 
-        if (_timer < 7 && newTimer > 7)
+    void OnTriggerExit2D(Collider2D coll)
+    {
+        if (coll.gameObject.tag == "Player")
         {
-            _text.text = "When jumping against a wall, hold LMB (in flight) to cling to the wall";
+            _fadeOutTimer = 0;
+            fadeOut = true;
+            fadeIn = false;
         }
+    }
 
-        if(_timer < 15 && newTimer > 15)
+
+    // Update is called once per frame
+    void Update ()
+    {
+        if(fadeIn && _fadeInTimer < fadeTime)
         {
-            _text.text = "Watch out for Parents. If they spot you, they will kill you";
+            _fadeInTimer += Time.deltaTime;
+            _text.color = new Color(125, 125, 125, 
+                (float)PennerDoubleEquation.Linear( _fadeInTimer, 0, 1, fadeTime));
         }
-
-        if (_timer < 18 && newTimer > 18)
+        else if (fadeOut && _fadeOutTimer < fadeTime)
         {
-            _text.text = "If you are quickly enough, press RMB to attack the parent.";
+            _fadeOutTimer += Time.deltaTime;
+            _text.color = new Color(125, 125, 125,
+                1.0f - (float)PennerDoubleEquation.Linear(_fadeOutTimer, 0, 1, fadeTime));
         }
-
-        if (_timer > 25)
-        {
-            _text.color = new Color(125, 125, 125, 1.0f - (float)PennerDoubleEquation.GetValue(PennerDoubleEquation.EquationType.Linear, _timer -25, 0, 1, 1));
-        }
-
-        _timer = newTimer;
-        
     }
 }

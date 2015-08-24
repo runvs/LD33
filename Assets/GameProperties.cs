@@ -1,9 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
-
+﻿
 public static class GameProperties
 {
-    public static float Enemy_AccelerationForce = 40;
+    public static float Enemy_AccelerationForce = 70;
     public static float Enemy_WalkTimer = 2.0f;
     public static float Enemy_DetectionTimeMax = 0.75f;
 

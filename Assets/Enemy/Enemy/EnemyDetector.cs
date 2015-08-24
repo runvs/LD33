@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System;
 
-public class EnemyDetector : MonoBehaviour {
+public class EnemyDetector : MonoBehaviour
+{
 
 
     public EnemyStrategy _strategy;
@@ -17,14 +16,14 @@ public class EnemyDetector : MonoBehaviour {
     private Light markLight;
 
     // Use this for initialization
-    void Start ()
+    void Start()
     {
         sprr = this.transform.FindChild("Mark").GetComponent<SpriteRenderer>();
         markLight = this.transform.FindChild("MarkLight").GetComponent<Light>();
     }
-	
-	// Update is called once per frame
-	void Update ()
+
+    // Update is called once per frame
+    void Update()
     {
         if (_playerInDetection)
         {
@@ -43,7 +42,7 @@ public class EnemyDetector : MonoBehaviour {
             }
         }
 
-        if (_detectionTimer < GameProperties.Enemy_DetectionTimeMax/2.0f)
+        if (_detectionTimer < GameProperties.Enemy_DetectionTimeMax / 2.0f)
         {
             sprr.sprite = markRed;
             markLight.enabled = true;
@@ -69,7 +68,7 @@ public class EnemyDetector : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.gameObject.tag == "Player" )
+        if (coll.gameObject.tag == "Player")
         {
             this.transform.parent.FindChild("VisorLight").GetComponent<Light>().color = new Color(1.0f, 0.1f, 0.1f, 1);
             _playerInDetection = true;

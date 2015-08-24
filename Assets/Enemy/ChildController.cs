@@ -24,11 +24,14 @@ public class ChildController : MonoBehaviour
         material.SetColor("_Color", Color.red);
 
         var fader = GameObject.FindGameObjectWithTag("GameOverFader");
-        var image = fader.GetComponent<Image>();
-        image.enabled = true;
+        if (fader != null)
+        {
+            var image = fader.GetComponent<Image>();
+            image.enabled = true;
 
-        var fadeScript = fader.GetComponent<GameOverFade>();
-        fadeScript.BeginFade = true;
+            var fadeScript = fader.GetComponent<GameOverFade>();
+            fadeScript.BeginFade = true;
+        }
 
         Debug.Log("Child destroyed! MWAHAHAHA");
     }

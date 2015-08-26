@@ -4,10 +4,15 @@ using UnityEngine.UI;
 public class ChildController : MonoBehaviour
 {
 
+    public string NextLevel;
+
     // Use this for initialization
     void Start()
     {
-
+        if (string.IsNullOrEmpty(NextLevel))
+        {
+            NextLevel = "Menu";
+        }
     }
 
     // Update is called once per frame
@@ -31,9 +36,9 @@ public class ChildController : MonoBehaviour
             image.enabled = true;
 
             var fadeScript = fader.GetComponent<GameOverFade>();
+            fadeScript.SetNextLevel(NextLevel);
             fadeScript.BeginFade = true;
         }
 
-        Debug.Log("Child destroyed! MWAHAHAHA");
     }
 }
